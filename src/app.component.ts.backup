@@ -1,0 +1,507 @@
+import {
+  Component, signal, afterNextRender, inject
+} from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+declare const mermaid: any;
+declare const Prism: any;
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+})
+export class AppComponent {
+
+  private sanitizer = inject(DomSanitizer);
+
+  // Student names for the report with roles
+  studentNames = signal([
+    { name: 'Ali Adnan Muhammad', role: 'Project Manager | Developer | Designer | Presenter' },
+    { name: 'Saad Safaa Al-Din', role: 'QA Tester | Developer' },
+    { name: 'Mutasim Ahmed', role: 'Developer | Presenter' },
+    { name: 'Abdullah Muhammad', role: 'Developer' },
+    { name: 'Muhammad Abdullah', role: 'Developer' },
+    { name: 'Walid Jassim', role: 'Developer' }
+  ]);
+
+  currentDate = signal('December 2025');
+
+  // Executive summary signal
+  summary = signal(`This report presents a comprehensive Smart Seating Allocation Engine developed using core C++ data structures and algorithms. The system efficiently manages classroom seating through a 2D array structure, implementing automated seat assignment, availability checking, and visual mapping features. The modular design ensures scalability, maintainability, and serves as a practical demonstration of algorithmic problem-solving.`);
+
+  // Alias for HTML template compatibility
+  summaryText = this.summary;
+
+  // Print function
+  printReport() {
+    window.print();
+  }
+
+  // ==================== PRESENTATION MODE ====================
+  presentationMode = signal(false);
+  currentSlide = signal(0);
+  flowchartStep = signal(0);
+  codeHighlightLine = signal(0);
+  isAnimating = signal(false);
+
+  // Seat Allocation Diagram Steps
+  diagramStep = signal(0);
+  maxDiagramSteps = 5;
+
+  // Slide definitions
+  slides = signal([
+    { id: 'intro', title: 'مقدمة المشروع', type: 'intro' },
+    { id: 'context', title: 'فكرة وهدف المشروع', type: 'context' },
+    { id: 'solution', title: 'الحل المقترح', type: 'solution' },
+    { id: 'flowchart', title: 'مخطط سير العمل', type: 'flowchart' },
+    { id: 'main', title: 'الدالة الرئيسية main()', type: 'code', funcIndex: 0 },
+    { id: 'init', title: 'دالة التهيئة initClassroom()', type: 'code', funcIndex: 1 },
+    { id: 'available', title: 'فحص التوفر isSeatAvailable()', type: 'code', funcIndex: 2 },
+    { id: 'assign', title: 'تخصيص المقعد assignSeat()', type: 'code', funcIndex: 3 },
+    { id: 'display', title: 'عرض الخريطة displayMap()', type: 'code', funcIndex: 4 },
+    { id: 'demo', title: 'التنفيذ المباشر', type: 'demo' },
+    { id: 'future', title: 'التطوير المستقبلي', type: 'future' },
+    { id: 'thanks', title: 'شكراً لكم', type: 'thanks' }
+  ]);
+
+  totalSlides = () => this.slides().length;
+
+  startPresentation() {
+    this.presentationMode.set(true);
+    this.currentSlide.set(0);
+    this.flowchartStep.set(0);
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', this.handleKeydown.bind(this));
+  }
+
+  exitPresentation() {
+    this.presentationMode.set(false);
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', this.handleKeydown.bind(this));
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (!this.presentationMode()) return;
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case ' ':
+        event.preventDefault();
+        this.nextSlide();
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        this.prevSlide();
+        break;
+      case 'Escape':
+        this.exitPresentation();
+        break;
+    }
+  }
+
+  nextSlide() {
+    if (this.isAnimating()) return;
+    const current = this.currentSlide();
+    const slideType = this.slides()[current]?.type;
+
+    // Special handling for flowchart - step through nodes first
+    if (slideType === 'flowchart' && this.flowchartStep() < 8) {
+      this.flowchartStep.update(v => v + 1);
+      return;
+    }
+
+    // Special handling for solution slide - step through diagram
+    if (slideType === 'solution' && this.diagramStep() < this.maxDiagramSteps) {
+      this.diagramStep.update(v => v + 1);
+      this.updateClassroomGrid(this.diagramStep());
+      return;
+    }
+
+    if (current < this.totalSlides() - 1) {
+      this.isAnimating.set(true);
+      this.currentSlide.update(v => v + 1);
+      this.flowchartStep.set(0);
+      this.codeHighlightLine.set(0);
+      this.resetDiagramStep();
+      setTimeout(() => this.isAnimating.set(false), 500);
+    }
+  }
+
+  prevSlide() {
+    if (this.isAnimating()) return;
+    const current = this.currentSlide();
+    const slideType = this.slides()[current]?.type;
+
+    // Special handling for solution slide - step back through diagram
+    if (slideType === 'solution' && this.diagramStep() > 0) {
+      this.diagramStep.update(v => v - 1);
+      this.updateClassroomGrid(this.diagramStep());
+      return;
+    }
+
+    if (current > 0) {
+      this.isAnimating.set(true);
+      this.currentSlide.update(v => v - 1);
+      this.flowchartStep.set(0);
+      this.resetDiagramStep();
+      setTimeout(() => this.isAnimating.set(false), 500);
+    }
+  }
+
+  goToSlide(index: number) {
+    if (index >= 0 && index < this.totalSlides()) {
+      this.currentSlide.set(index);
+      this.flowchartStep.set(0);
+    }
+  }
+
+  getCurrentSlideData() {
+    return this.slides()[this.currentSlide()];
+  }
+
+  getProgressPercent() {
+    return ((this.currentSlide() + 1) / this.totalSlides()) * 100;
+  }
+
+  // Diagram Step Navigation
+  nextDiagramStep() {
+    if (this.diagramStep() < this.maxDiagramSteps) {
+      this.diagramStep.update(v => v + 1);
+    }
+  }
+
+  prevDiagramStep() {
+    if (this.diagramStep() > 0) {
+      this.diagramStep.update(v => v - 1);
+    }
+  }
+
+  resetDiagramStep() {
+    this.diagramStep.set(0);
+  }
+
+  // Classroom grid data for visualization
+  classroomGrid = signal([
+    ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
+    ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
+    ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
+    ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
+    ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY']
+  ]);
+
+  // Student input queue
+  studentQueue = signal(['S_001', 'S_002', 'S_003']);
+  currentStudent = signal('');
+
+  // Update classroom grid based on diagram step
+  updateClassroomGrid(step: number) {
+    const grid = this.classroomGrid();
+    const students = this.studentQueue();
+
+    // Reset grid
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 6; j++) {
+        grid[i][j] = 'EMPTY';
+      }
+    }
+
+    // Apply students based on step
+    if (step >= 3) {
+      grid[0][0] = students[0]; // First seat taken
+    }
+    if (step >= 4) {
+      grid[0][1] = students[1]; // Second seat taken
+    }
+    if (step >= 5) {
+      grid[0][2] = students[2]; // Third seat taken
+      this.currentStudent.set(students[2]);
+    } else if (step >= 4) {
+      this.currentStudent.set(students[1]);
+    } else if (step >= 3) {
+      this.currentStudent.set(students[0]);
+    } else {
+      this.currentStudent.set('');
+    }
+
+    this.classroomGrid.set([...grid]);
+  }
+
+  // Function Analysis Data - REORDERED: main() first, then helper functions
+  functionAnalysis = signal([
+    {
+      name: 'int main()',
+      desc: 'The program entry point and orchestrator. It initializes the classroom matrix, performs sequential seat assignments for test students, and displays the final seating arrangement.',
+      complexity: 'O(1) + O(R*C) per call',
+      returnType: 'int',
+      code: `int main() {
+    initClassroom();  // Initialize empty seats
+    
+    // Assign seats to students
+    assignSeat("S_001");
+    assignSeat("S_002");
+    assignSeat("S_003");
+    
+    displayMap();     // Show final layout
+    return 0;
+}`,
+      output: `Allocated S_001
+Allocated S_002
+Allocated S_003
+--- CURRENT CLASS LAYOUT ---`
+    },
+    {
+      name: 'void initClassroom()',
+      desc: 'Initializes the 2D classroom matrix by filling every cell with "EMPTY". This function uses nested loops to iterate over all rows and columns, setting each seat to its default unoccupied state.',
+      complexity: 'O(R * C) where R=rows, C=columns',
+      returnType: 'void',
+      code: `void initClassroom() {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            classroom[i][j] = "EMPTY";
+        }
+    }
+}`,
+      output: `Classroom initialized with 30 empty seats.`
+    },
+    {
+      name: 'bool isSeatAvailable(int row, int col)',
+      desc: 'Checks if a specific seat at the given row and column is available (empty). This utility function performs boundary validation and returns true if the seat can be assigned, false otherwise.',
+      complexity: 'O(1) - Constant time lookup',
+      returnType: 'bool',
+      code: `bool isSeatAvailable(int row, int col) {
+    // Validate bounds
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
+        return false;
+    }
+    // Check if seat is empty
+    return classroom[row][col] == "EMPTY";
+}`,
+      output: `Seat [0,0] is available: true
+Seat [0,0] is available: false (after assignment)`
+    },
+    {
+      name: 'bool assignSeat(string studentID)',
+      desc: 'Scans the matrix for the first available seat using a linear search algorithm. When an empty slot is found, it assigns the student ID and returns true. If no seats are available, it returns false.',
+      complexity: 'O(R * C) - Linear scan',
+      returnType: 'bool',
+      code: `bool assignSeat(string studentID) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (isSeatAvailable(i, j)) {
+                classroom[i][j] = studentID;
+                cout << "Allocated " << studentID << endl;
+                return true;
+            }
+        }
+    }
+    cout << "Error: Class is full!" << endl;
+    return false;
+}`,
+      output: `Allocated S_001
+Allocated S_002`
+    },
+    {
+      name: 'void displayMap()',
+      desc: 'Renders a visual representation of the current classroom seating arrangement. Iterates through the 2D matrix and prints each cell in a formatted table layout with proper alignment.',
+      complexity: 'O(R * C) - Full matrix traversal',
+      returnType: 'void',
+      code: `void displayMap() {
+    cout << "--- CURRENT CLASS LAYOUT ---" << endl;
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            cout << "| " << setw(10) << classroom[i][j] << " ";
+        }
+        cout << "|" << endl;
+    }
+}`,
+      output: `--- CURRENT CLASS LAYOUT ---
+| S_001      | S_002      | EMPTY      |
+| EMPTY      | EMPTY      | EMPTY      |`
+    }
+  ]);
+
+  // Sample Output Data
+  sampleOutput = signal(`--- SMART SEATING ENGINE v1.0 ---
+Initializing classroom with 30 seats...
+Allocated S_001 to seat [0,0]
+Allocated S_002 to seat [0,1]
+Allocated S_003 to seat [0,2]
+--- CURRENT CLASS LAYOUT ---
+| S_001      | S_002      | S_003      |
+| EMPTY      | EMPTY      | EMPTY      |`);
+
+  // Complete Source Code (updated with isSeatAvailable function)
+  fullSourceCode = signal(`#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+// Global Constants
+const int ROWS = 5;
+const int COLS = 6;
+
+// 2D Array (Matrix) for classroom
+string classroom[ROWS][COLS];
+
+// Function: Initialize Classroom
+void initClassroom() {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            classroom[i][j] = "EMPTY";
+        }
+    }
+}
+
+// Function: Check Seat Availability
+bool isSeatAvailable(int row, int col) {
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
+        return false;
+    }
+    return classroom[row][col] == "EMPTY";
+}
+
+// Function: Display Classroom Map
+void displayMap() {
+    cout << "--- CURRENT CLASS LAYOUT ---" << endl;
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            cout << "| " << setw(10) << classroom[i][j] << " ";
+        }
+        cout << "|" << endl;
+    }
+}
+
+// Function: Assign Seat
+bool assignSeat(string studentID) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (isSeatAvailable(i, j)) {
+                classroom[i][j] = studentID;
+                cout << "Allocated " << studentID << endl;
+                return true;
+            }
+        }
+    }
+    cout << "Error: Class is full!" << endl;
+    return false;
+}
+
+// Main Execution
+int main() {
+    initClassroom();
+    
+    assignSeat("S_001");
+    assignSeat("S_002");
+    assignSeat("S_003");
+    
+    displayMap();
+    return 0;
+}
+`);
+
+  // Full Execution Output
+  fullOutput = signal(`Allocated S_001
+Allocated S_002
+Allocated S_003
+--- CURRENT CLASS LAYOUT ---
+| S_001      | S_002      | S_003      | EMPTY      | EMPTY      | EMPTY      | 
+| EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | 
+| EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | 
+| EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | 
+| EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | EMPTY      | 
+----------------------------`);
+
+  // Future Scope Data
+  futureScope = signal([
+    {
+      title: 'Data Persistence',
+      icon: 'M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0-2.21 3.58-4 8-4s8 1.79 8 4m0 5c0 2.21-3.58 4-8 4s-8-1.79-8-4',
+      desc: 'Integration with File I/O (CSV) or SQLite to permanently store student records and seating arrangements between sessions, replacing the current volatile RAM storage.'
+    },
+    {
+      title: 'Algorithmic Optimization',
+      icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+      desc: 'Implementing a Hash Map (std::unordered_map) for student lookups to reduce the search complexity from O(R*C) to O(1) for large-scale auditoriums.'
+    },
+    {
+      title: 'GUI Integration',
+      icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+      desc: 'Developing a graphical interface using Qt or wxWidgets to provide an interactive, click-based seating management experience for end users.'
+    }
+  ]);
+
+  // Resources Data
+  resources = signal([
+    { name: 'Logic Flowchart', tool: 'draw.io', icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z' },
+    { name: 'Report Design', tool: 'Canva', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { name: 'Development IDE', tool: 'VS Code', icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4' },
+    { name: 'Learning Resources', tool: 'GeeksforGeeks & cplusplus.com', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+    { name: 'Icon Library', tool: 'Heroicons', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { name: 'Core Language', tool: 'C++ (GCC)', icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4' }
+  ]);
+
+  // Mermaid Flowchart Definition 
+  mermaidDefinition = signal(`
+    %%{
+      init: {
+        'theme': 'base',
+        'themeVariables': {
+          'primaryColor': '#ffffff',
+          'primaryTextColor': '#334155',
+          'primaryBorderColor': '#cbd5e1',
+          'lineColor': '#818cf8',
+          'fontFamily': 'Inter',
+          'fontSize': '16px'
+        },
+        'flowchart': { 
+            'curve': 'basis',
+            'padding': 15,
+            'nodeSpacing': 40,
+            'rankSpacing': 40,
+            'useMaxWidth': true
+        }
+      }
+    }%%
+    flowchart TD
+      A([Start]):::start --> B[/Input Student ID/]:::proc
+      B --> C[Loop i: 0 to ROWS]:::proc
+      C --> D[Loop j: 0 to COLS]:::proc
+      D --> E{Is Slot Empty?}:::decision
+      E -- Yes --> F[Assign Seat]:::proc
+      F --> G[/Return True/]:::proc
+      E -- No --> D
+      D -- End Row --> C
+      C -- End Table --> H([Class Full]):::endnode
+      H --> I([End]):::endnode
+      G --> I
+
+      classDef start fill:#d1fae5,stroke:#059669,stroke-width:2px;
+      classDef proc fill:#eff6ff,stroke:#3b82f6,stroke-width:2px;
+      classDef decision fill:#ffedd5,stroke:#ea580c,stroke-width:2px,rx:5,ry:5;
+      classDef endnode fill:#fee2e2,stroke:#dc2626,stroke-width:2px;
+  `);
+
+  mermaidSvg = signal<SafeHtml>('');
+
+  async ngAfterViewInit() {
+    setTimeout(() => this.renderDiagrams(), 300);
+  }
+
+  async renderDiagrams() {
+    if (typeof Prism !== 'undefined') {
+      Prism.highlightAll();
+    }
+    if (typeof mermaid !== 'undefined') {
+      try {
+        mermaid.initialize({
+          startOnLoad: false,
+          securityLevel: 'loose',
+        });
+        const { svg } = await mermaid.render('mermaid-svg', this.mermaidDefinition());
+        this.mermaidSvg.set(this.sanitizer.bypassSecurityTrustHtml(svg));
+      } catch (e) {
+        console.error('Mermaid render error:', e);
+      }
+    }
+  }
+}

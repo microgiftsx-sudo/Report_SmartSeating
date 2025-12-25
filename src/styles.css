@@ -1,0 +1,838 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RTL Support for Arabic Text */
+[dir="rtl"], .text-rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Hide ALL scrollbars in presentation mode */
+.presentation-overlay *::-webkit-scrollbar {
+    display: none !important;
+}
+
+.presentation-overlay * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+/* ==================== PRESENTATION MODE STYLES ==================== */
+
+/* Overlay */
+.presentation-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    overflow: hidden;
+}
+
+/* Slide Container */
+.slide-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 2000px;
+    padding: 20px;
+}
+
+.slide {
+    width: 95vw;
+    max-width: 1400px;
+    height: 90vh;
+    max-height: 900px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Slide Animations */
+.slide-enter {
+    animation: slideEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideEnter {
+    from {
+        opacity: 0;
+        transform: translateX(100px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.slide-exit {
+    animation: slideExit 0.4s ease-in forwards;
+}
+
+@keyframes slideExit {
+    to {
+        opacity: 0;
+        transform: translateX(-100px) scale(0.95);
+    }
+}
+
+/* Fade In Up Animation */
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered Children */
+.stagger-children>* {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stagger-children>*:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.stagger-children>*:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.stagger-children>*:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.stagger-children>*:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.stagger-children>*:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.stagger-children>*:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.stagger-children>*:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.stagger-children>*:nth-child(8) {
+    animation-delay: 0.8s;
+}
+
+/* Typewriter Effect */
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end);
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* Code Highlight */
+.code-highlight {
+    position: relative;
+}
+
+.code-highlight::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: -2px;
+    bottom: -2px;
+    background: rgba(99, 102, 241, 0.3);
+    border-left: 4px solid #6366f1;
+    border-radius: 4px;
+    animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+
+    0%,
+    100% {
+        background: rgba(99, 102, 241, 0.2);
+    }
+
+    50% {
+        background: rgba(99, 102, 241, 0.4);
+    }
+}
+
+/* Arrow Pointer Animation */
+.arrow-pointer {
+    position: absolute;
+    animation: arrowBounce 1s ease-in-out infinite;
+}
+
+@keyframes arrowBounce {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+}
+
+/* Flowchart Node Base */
+.flowchart-node {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flowchart-node.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* New Premium Flowchart Components */
+.proc-node {
+    @apply px-4 py-2 border-2 rounded-lg font-semibold text-center shadow-lg transition-all duration-300;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.proc-node.start {
+    @apply border-green-500 text-green-400 bg-green-500/10 rounded-full;
+}
+
+.proc-node.input {
+    @apply border-blue-500 text-blue-400 bg-blue-500/10 skew-x-[-12deg];
+}
+
+.proc-node.loop {
+    @apply border-indigo-500 text-indigo-400 bg-indigo-500/10;
+}
+
+.proc-node.success {
+    @apply border-emerald-500 text-emerald-400 bg-emerald-500/10;
+}
+
+.proc-node.fail {
+    @apply border-red-500 text-red-400 bg-red-500/10;
+}
+
+.proc-node.error {
+    @apply border-rose-600 text-rose-500 bg-rose-600/20 font-bold;
+}
+
+.decision-rhombus {
+    @apply w-20 h-20 border-2 border-amber-500 bg-amber-500/10 rotate-45 flex items-center justify-center shadow-xl shadow-amber-500/5;
+}
+
+.rhombus-text {
+    @apply -rotate-45 text-amber-400 font-bold text-center;
+    font-size: 10px;
+    line-height: 1.1;
+}
+
+.v-line {
+    @apply w-0.5 bg-indigo-500/40 relative;
+    height: 100%;
+}
+
+.v-line::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 border-b-2 border-r-2 border-indigo-500/40 rotate-45;
+}
+
+.v-line.red {
+    @apply bg-red-500/40;
+}
+
+.v-line.red::after {
+    @apply border-red-500/40;
+}
+
+.h-line {
+    @apply h-0.5 bg-indigo-500/40 relative;
+    width: 100%;
+}
+
+.h-line.green {
+    @apply bg-green-500/40;
+}
+
+.h-line.red {
+    @apply bg-red-500/40;
+}
+
+.end-node {
+    @apply px-3 py-1 border-2 rounded-full font-bold text-[9px] uppercase tracking-wider;
+}
+
+.end-node.success {
+    @apply border-emerald-500 text-emerald-400 bg-emerald-500/20 shadow-lg shadow-emerald-500/10;
+}
+
+.end-node.error {
+    @apply border-red-500 text-red-400 bg-red-500/20 shadow-lg shadow-red-500/10;
+}
+
+.annotation-alt {
+    @apply text-white/40 italic font-light border-l border-white/10 pl-3;
+    font-size: 10px;
+}
+
+.annotation-alt.warning {
+    @apply border-red-500/30 text-red-400/60;
+}
+
+/* Seat Grid Animation */
+.seat-grid .seat {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.seat-grid .seat.filled {
+    opacity: 1;
+    transform: scale(1);
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+}
+
+.seat-grid .seat.empty {
+    opacity: 1;
+    transform: scale(1);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #a855f7);
+    transition: width 0.3s ease-out;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(99, 102, 241, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+}
+
+.nav-btn:hover {
+    background: rgba(99, 102, 241, 0.8);
+    border-color: rgba(129, 140, 248, 0.8);
+    transform: scale(1.15);
+    box-shadow: 0 6px 30px rgba(99, 102, 241, 0.5);
+}
+
+.nav-btn:active {
+    transform: scale(1.05);
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: scale(1);
+    box-shadow: none;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Slide Title */
+.slide-title {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff, #c7d2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.slide-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+}
+
+/* Code Block in Presentation */
+.pres-code-block {
+    background: #1e1e1e;
+    border-radius: 16px;
+    padding: 1.5rem;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: clamp(0.65rem, 1.4vw, 0.9rem);
+    line-height: 1.7;
+    overflow: hidden;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    max-height: 100%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.pres-code-block code {
+    display: block;
+    color: #e2e8f0;
+}
+
+.pres-code-block .line {
+    display: block;
+    padding: 3px 0;
+    transition: all 0.3s ease;
+}
+
+.pres-code-block .line.highlight {
+    background: rgba(99, 102, 241, 0.3);
+    margin: 0 -1.5rem;
+    padding: 3px 1.5rem;
+    border-left: 4px solid #6366f1;
+    border-radius: 4px;
+}
+
+/* Annotation Arrow */
+.annotation {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.annotation-line {
+    width: 60px;
+    height: 2px;
+    background: #f59e0b;
+}
+
+.annotation-text {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #fbbf24;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Pulse Animation for Demo */
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Scale In Animation */
+.scale-in {
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Confetti for Thanks Slide */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #6366f1;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glass Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Slide Dots Navigation */
+.slide-dots {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.slide-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 2px solid transparent;
+}
+
+.slide-dot.active {
+    width: 32px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+}
+
+.slide-dot:hover {
+    background: rgba(99, 102, 241, 0.7);
+    transform: scale(1.2);
+}
+
+/* Diagram Animations */
+.seat-cell {
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.seat-cell.scale-110 {
+    animation: seatPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes seatPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* Step card animations */
+.glass-card.scale-105 {
+    animation: cardHighlight 0.5s ease-out forwards;
+}
+
+@keyframes cardHighlight {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(99, 102, 241, 0);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+    }
+    100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+    }
+}
+
+/* Smooth fade transitions */
+.glass-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Progress line animation */
+.w-8.h-0\.5 {
+    transition: background-color 0.5s ease-out;
+}
+
+/* Status text animation */
+.font-mono {
+    transition: color 0.3s ease-out;
+}
+
+/* Enhanced pulse for active assignment */
+.seat-cell.animate-pulse {
+    animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+    }
+}
+
+/* Enhanced Code Syntax Highlighting - Modern IDE Theme */
+
+/* Keywords (bool, int, void, return, if, for, etc.) */
+pre span.text-purple-400,
+pre code .keyword,
+.pres-code-block .keyword {
+    color: #c792ea !important;
+    font-weight: 600;
+}
+
+/* Functions and methods */
+pre span.text-blue-400,
+pre code .function,
+.pres-code-block .function {
+    color: #82aaff !important;
+}
+
+/* Types and classes */
+pre code .type,
+.pres-code-block .type {
+    color: #ffcb6b !important;
+}
+
+/* Strings */
+pre code .string,
+.pres-code-block .string {
+    color: #c3e88d !important;
+}
+
+/* Numbers and constants */
+pre span.text-amber-400,
+pre code .number,
+.pres-code-block .number {
+    color: #f78c6c !important;
+}
+
+/* Comments */
+pre code .comment,
+.pres-code-block .comment {
+    color: #546e7a !important;
+    font-style: italic;
+}
+
+/* Operators */
+pre code .operator,
+.pres-code-block .operator {
+    color: #89ddff !important;
+}
+
+/* Preprocessor directives */
+pre code .preprocessor,
+.pres-code-block .preprocessor {
+    color: #cc7832 !important;
+}
+
+/* Control flow keywords */
+pre code .control,
+.pres-code-block .control {
+    color: #c792ea !important;
+    font-weight: 600;
+}
+
+/* Variables and identifiers */
+pre code .variable,
+.pres-code-block .variable {
+    color: #eeffff !important;
+}
+
+/* Brackets and parentheses */
+pre code .bracket,
+.pres-code-block .bracket {
+    color: #ff5370 !important;
+}
+
+/* Whitespace and special characters */
+pre span.text-white\/30 {
+    color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Enhanced inline code spans for manual highlighting */
+.text-cyan-400 { color: #89ddff !important; }
+.text-green-400 { color: #c3e88d !important; }
+.text-rose-400 { color: #f07178 !important; }
+.text-emerald-400 { color: #4caf50 !important; }
+.text-orange-400 { color: #ff9f43 !important; }
+.text-indigo-400 { color: #7986cb !important; }
+
+/* Responsive Design Improvements */
+@media (max-width: 1024px) {
+    .slide {
+        width: 98vw;
+        height: 92vh;
+        padding: 2rem;
+    }
+
+    .slide-title {
+        font-size: clamp(1.25rem, 4vw, 2rem);
+    }
+
+    .pres-code-block {
+        font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+    }
+
+    .nav-btn {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+@media (max-width: 768px) {
+    .slide {
+        padding: 1.5rem;
+    }
+
+    .slide-dots {
+        gap: 6px;
+    }
+
+    .slide-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .slide-dot.active {
+        width: 24px;
+    }
+}
+
+/* Flowchart Responsive Scaling */
+.flowchart-wrap {
+    transform-origin: center center;
+}
+
+@media (max-width: 1200px) {
+    .flowchart-wrap {
+        transform: scale(0.75);
+    }
+}
+
+@media (max-width: 900px) {
+    .flowchart-wrap {
+        transform: scale(0.6);
+    }
+}
+
+/* Glass card improvements */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Progress bar improvement */
+.progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+    background-size: 200% 100%;
+    transition: width 0.3s ease-out;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Slide counter improvements */
+.fixed.top-6.left-6.z-50 {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    backdrop-filter: blur(10px);
+    font-weight: 600;
+}
