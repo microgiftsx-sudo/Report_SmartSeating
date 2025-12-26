@@ -43,17 +43,34 @@
 .slide {
     width: 98vw;
     max-width: 1600px;
-    height: 95vh;
-    max-height: 1000px;
+    min-height: 95vh;
     background: rgba(15, 23, 42, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     backdrop-filter: blur(20px);
     padding: 3rem;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+}
+
+.slide::-webkit-scrollbar {
+    width: 12px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.6);
+    border-radius: 6px;
+}
+
+.slide::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.8);
 }
 
 /* Slide Animations */
@@ -438,13 +455,13 @@
 .pres-code-block {
     background: #1e1e1e;
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1.5rem;
     font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-    line-height: 1.9;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    line-height: 1.7;
     overflow-y: auto;
     border: 3px solid rgba(99, 102, 241, 0.5);
-    max-height: 65vh;
+    max-height: 50vh;
     word-wrap: break-word;
     white-space: pre-wrap;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
