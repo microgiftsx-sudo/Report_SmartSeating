@@ -240,7 +240,7 @@ export class AppComponent {
   functionAnalysis = signal([
     {
       name: 'int main()',
-      desc: 'The program entry point and orchestrator. It initializes the classroom matrix, performs sequential seat assignments for test students, and displays the final seating arrangement.',
+      desc: '',
       complexity: 'O(1) + O(R*C) per call',
       returnType: 'int',
       code: `<span class="text-purple-400">int</span> <span class="text-blue-400">main</span>() {
@@ -261,7 +261,7 @@ Allocated S_003
     },
     {
       name: 'void initClassroom()',
-      desc: 'Initializes the 2D classroom matrix by filling every cell with "EMPTY". This function uses nested loops to iterate over all rows and columns, setting each seat to its default unoccupied state.',
+      desc: '',
       complexity: 'O(R * C) where R=rows, C=columns',
       returnType: 'void',
       code: `<span class="text-purple-400">void</span> <span class="text-blue-400">initClassroom</span>() {
@@ -275,7 +275,7 @@ Allocated S_003
     },
     {
       name: 'bool isSeatAvailable(int row, int col)',
-      desc: 'Checks if a specific seat at the given row and column is available (empty). This utility function performs boundary validation and returns true if the seat can be assigned, false otherwise.',
+      desc: '',
       complexity: 'O(1) - Constant time lookup',
       returnType: 'bool',
       code: `<span class="text-purple-400">bool</span> <span class="text-blue-400">isSeatAvailable</span>(<span class="text-purple-400">int</span> row, <span class="text-purple-400">int</span> col) {
@@ -291,7 +291,7 @@ Seat [0,0] is available: false (after assignment)`
     },
     {
       name: 'bool assignSeat(string studentID)',
-      desc: 'Scans the matrix for the first available seat using a linear search algorithm. When an empty slot is found, it assigns the student ID and returns true. If no seats are available, it returns false.',
+      desc: '',
       complexity: 'O(R * C) - Linear scan',
       returnType: 'bool',
       code: `<span class="text-purple-400">bool</span> <span class="text-blue-400">assignSeat</span>(<span class="text-purple-400">string</span> studentID) {
@@ -312,7 +312,7 @@ Allocated S_002`
     },
     {
       name: 'void displayMap()',
-      desc: 'Renders a visual representation of the current classroom seating arrangement. Iterates through the 2D matrix and prints each cell in a formatted table layout with proper alignment.',
+      desc: '',
       complexity: 'O(R * C) - Full matrix traversal',
       returnType: 'void',
       code: `<span class="text-purple-400">void</span> <span class="text-blue-400">displayMap</span>() {

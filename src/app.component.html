@@ -519,21 +519,6 @@
     {{ currentSlide() + 1 }} / {{ totalSlides() }}
   </div>
 
-  <!-- Navigation Buttons -->
-  <button (click)="prevSlide()" [disabled]="currentSlide() === 0"
-    class="nav-btn fixed left-6 top-1/2 -translate-y-1/2 z-50">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
-  </button>
-
-  <button (click)="nextSlide()" [disabled]="currentSlide() === totalSlides() - 1"
-    class="nav-btn fixed right-6 top-1/2 -translate-y-1/2 z-50">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-
   <!-- Slide Dots -->
   <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 slide-dots">
     @for (slide of slides(); track slide.id; let i = $index) {
