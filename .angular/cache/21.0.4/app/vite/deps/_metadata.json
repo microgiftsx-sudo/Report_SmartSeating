@@ -1,0 +1,40 @@
+{
+  "hash": "7dd5a68f",
+  "configHash": "da5d8899",
+  "lockfileHash": "8f1808c8",
+  "browserHash": "699643c7",
+  "optimized": {
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "8ddcde5f",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "49369ab8",
+      "needsInterop": false
+    },
+    "pptxgenjs": {
+      "src": "../../../../../../node_modules/pptxgenjs/dist/pptxgen.es.js",
+      "file": "pptxgenjs.js",
+      "fileHash": "a7f1fa6e",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-YTTIWN7M": {
+      "file": "chunk-YTTIWN7M.js"
+    },
+    "node_fs-254RF44Y": {
+      "file": "node_fs-254RF44Y.js"
+    },
+    "node_https-QA25HYTB": {
+      "file": "node_https-QA25HYTB.js"
+    },
+    "chunk-VL5VAURS": {
+      "file": "chunk-VL5VAURS.js"
+    }
+  }
+}
