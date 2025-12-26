@@ -244,6 +244,7 @@ export class AppComponent {
       complexity: 'O(1) + O(R*C) per call',
       returnType: 'int',
       code: `<span class="text-purple-400">int</span> <span class="text-blue-400">main</span>() {
+
     <span class="text-blue-400">initClassroom</span>();  <span class="text-white/40">// Initialize empty seats</span>
 
     <span class="text-white/40">// Assign seats to students</span>
@@ -252,6 +253,7 @@ export class AppComponent {
     <span class="text-blue-400">assignSeat</span>(<span class="text-green-400">"S_003"</span>);
 
     <span class="text-blue-400">displayMap</span>();     <span class="text-white/40">// Show final layout</span>
+
     <span class="text-rose-400">return</span> <span class="text-amber-400">0</span>;
 }`,
       output: `Allocated S_001
@@ -265,6 +267,7 @@ Allocated S_003
       complexity: 'O(R * C) where R=rows, C=columns',
       returnType: 'void',
       code: `<span class="text-purple-400">void</span> <span class="text-blue-400">initClassroom</span>() {
+
     <span class="text-purple-400">for</span> (<span class="text-purple-400">int</span> i = <span class="text-amber-400">0</span>; i < ROWS; i++) {
         <span class="text-purple-400">for</span> (<span class="text-purple-400">int</span> j = <span class="text-amber-400">0</span>; j < COLS; j++) {
             classroom<span class="text-cyan-400">[</span>i<span class="text-cyan-400">][</span>j<span class="text-cyan-400">]</span> = <span class="text-green-400">"EMPTY"</span>;
@@ -279,10 +282,12 @@ Allocated S_003
       complexity: 'O(1) - Constant time lookup',
       returnType: 'bool',
       code: `<span class="text-purple-400">bool</span> <span class="text-blue-400">isSeatAvailable</span>(<span class="text-purple-400">int</span> row, <span class="text-purple-400">int</span> col) {
+
     <span class="text-white/40">// Validate bounds</span>
     <span class="text-purple-400">if</span> (row <span class="text-cyan-400">&lt;</span> <span class="text-amber-400">0</span> <span class="text-cyan-400">||</span> row <span class="text-cyan-400">>=</span> ROWS <span class="text-cyan-400">||</span> col <span class="text-cyan-400">&lt;</span> <span class="text-amber-400">0</span> <span class="text-cyan-400">||</span> col <span class="text-cyan-400">>=</span> COLS) {
         <span class="text-rose-400">return</span> <span class="text-purple-400">false</span>;
     }
+
     <span class="text-white/40">// Check if seat is empty</span>
     <span class="text-rose-400">return</span> classroom<span class="text-cyan-400">[</span>row<span class="text-cyan-400">][</span>col<span class="text-cyan-400">]</span> <span class="text-cyan-400">==</span> <span class="text-green-400">"EMPTY"</span>;
 }`,
@@ -295,6 +300,7 @@ Seat [0,0] is available: false (after assignment)`
       complexity: 'O(R * C) - Linear scan',
       returnType: 'bool',
       code: `<span class="text-purple-400">bool</span> <span class="text-blue-400">assignSeat</span>(<span class="text-purple-400">string</span> studentID) {
+
     <span class="text-purple-400">for</span> (<span class="text-purple-400">int</span> i = <span class="text-amber-400">0</span>; i < ROWS; i++) {
         <span class="text-purple-400">for</span> (<span class="text-purple-400">int</span> j = <span class="text-amber-400">0</span>; j < COLS; j++) {
             <span class="text-purple-400">if</span> (<span class="text-blue-400">isSeatAvailable</span>(i, j)) {
@@ -304,6 +310,7 @@ Seat [0,0] is available: false (after assignment)`
             }
         }
     }
+
     cout <span class="text-cyan-400">&lt;&lt;</span> <span class="text-green-400">"Error: Class is full!"</span> <span class="text-cyan-400">&lt;&lt;</span> endl;
     <span class="text-rose-400">return</span> <span class="text-purple-400">false</span>;
 }`,
@@ -316,7 +323,9 @@ Allocated S_002`
       complexity: 'O(R * C) - Full matrix traversal',
       returnType: 'void',
       code: `<span class="text-purple-400">void</span> <span class="text-blue-400">displayMap</span>() {
+
     cout <span class="text-cyan-400">&lt;&lt;</span> <span class="text-green-400">"--- CURRENT CLASS LAYOUT ---"</span> <span class="text-cyan-400">&lt;&lt;</span> endl;
+
     <span class="text-purple-400">for</span> (<span class="text-purple-400">int</span> i = <span class="text-amber-400">0</span>; i < ROWS; i++) {
         <span class="text-purple-400">for</span> (<span class="text-purple-400">int</span> j = <span class="text-amber-400">0</span>; j < COLS; j++) {
             cout <span class="text-cyan-400">&lt;&lt;</span> <span class="text-green-400">"| "</span> <span class="text-cyan-400">&lt;&lt;</span> setw(<span class="text-amber-400">10</span>) <span class="text-cyan-400">&lt;&lt;</span> classroom<span class="text-cyan-400">[</span>i<span class="text-cyan-400">][</span>j<span class="text-cyan-400">]</span> <span class="text-cyan-400">&lt;&lt;</span> <span class="text-green-400">" "</span>;
