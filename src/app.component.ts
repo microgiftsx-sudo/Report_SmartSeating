@@ -2,7 +2,8 @@ import {
   Component, signal, afterNextRender, inject
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { RouterOutlet, Router, RouterModule, CommonModule } from '@angular/router';
+import { RouterOutlet, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import PptxGenJS from 'pptxgenjs';
 
 declare const mermaid: any;
