@@ -1,0 +1,117 @@
+<div class="terms-container">
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Header Section -->
+  <header class="header">
+    <div class="header-content">
+      <div class="badge">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span>Legal Document</span>
+      </div>
+      <h1 class="title">Terms of Service</h1>
+      <p class="subtitle">Smart Seating Allocation Engine - Last Updated: January 2025</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Sticky Table of Contents -->
+    <aside class="toc-sidebar" id="tocSidebar">
+      <div class="toc-card">
+        <div class="toc-header">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+          </svg>
+          <h3>Quick Navigation</h3>
+        </div>
+        <nav class="toc-nav">
+          @for (section of sections(); track section.id) {
+          <button
+            (click)="scrollToSection(section.id)"
+            class="toc-item"
+            [class.active]="activeSection() === section.id">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="section.icon" />
+            </svg>
+            <span>{{ section.title }}</span>
+          </button>
+          }
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Terms Sections -->
+    <div class="sections-container">
+      @for (section of sections(); track section.id) {
+      <section
+        [id]="section.id"
+        class="term-section"
+        [class.expanded]="isExpanded(section.id)"
+        [class.active-section]="activeSection() === section.id">
+        <div class="section-card" (click)="toggleSection(section.id)">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="section.icon" />
+              </svg>
+            </div>
+            <div class="section-title-group">
+              <h2 class="section-title">{{ section.title }}</h2>
+              <p class="section-meta">Last Updated: {{ section.lastUpdated }}</p>
+            </div>
+            <div class="expand-icon" [class.rotated]="isExpanded(section.id)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <div class="section-content" *ngIf="isExpanded(section.id)">
+            <div class="content-inner">
+              <p class="content-text">{{ section.content }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      }
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <h3>Smart Seating Allocation Engine</h3>
+        <p>Computer Science Department - University Project</p>
+      </div>
+      <div class="footer-links">
+        <a href="/privacy" class="footer-link">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Privacy Policy
+        </a>
+        <a href="mailto:legal@smartseating.engine" class="footer-link">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Contact Legal
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Smart Seating Engine. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
