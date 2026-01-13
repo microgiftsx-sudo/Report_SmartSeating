@@ -1,8 +1,8 @@
-# Legal Pages - Smart Seating Engine
+# Legal Pages - IraqDoc
 
 ## Overview
 
-Two modern, interactive legal pages have been added to the Smart Seating Engine application:
+Two modern, interactive legal pages have been added to the IraqDoc application:
 
 1. **Terms of Service** (`/terms`)
 2. **Privacy Policy** (`/privacy`)

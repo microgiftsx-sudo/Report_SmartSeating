@@ -29,7 +29,9 @@ export class AppComponent {
     { name: 'Walid Jassim', role: 'Developer' }
   ]);
 
-  currentDate = signal('December 2025');
+  currentDate = signal('January 2025');
+
+  projectName = signal('IraqDoc');
 
   // Executive summary signal
   summary = signal(`This report presents a comprehensive Smart Seating Allocation Engine developed using core C++ data structures and algorithms. The system efficiently manages classroom seating through a 2D array structure, implementing automated seat assignment, availability checking, and visual mapping features. The modular design ensures scalability, maintainability, and serves as a practical demonstration of algorithmic problem-solving.`);
