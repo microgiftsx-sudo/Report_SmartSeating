@@ -2,6 +2,7 @@ import {
   Component, signal, afterNextRender, inject
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { RouterOutlet, Router, RouterModule, CommonModule } from '@angular/router';
 import PptxGenJS from 'pptxgenjs';
 
 declare const mermaid: any;
@@ -9,6 +10,8 @@ declare const Prism: any;
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RouterModule, CommonModule],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

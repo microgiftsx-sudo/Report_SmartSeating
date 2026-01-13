@@ -1,0 +1,325 @@
+<div class="privacy-container" (scroll)="onScroll()">
+  <!-- Animated Background -->
+  <div class="bg-gradient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Scroll Progress -->
+  <div class="scroll-progress">
+    <div class="scroll-bar" [style.width.%]="scrollProgress()"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="privacy-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <span>Your Privacy Matters</span>
+      </div>
+
+      <h1 class="main-title">Privacy Policy</h1>
+
+      <p class="main-subtitle">
+        Smart Seating Allocation Engine — Last Updated: January 2025
+      </p>
+
+      <!-- Quick Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.1)); border-color: rgba(99, 102, 241, 0.5);">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-value">0%</p>
+            <p class="stat-label">Cloud Storage</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1)); border-color: rgba(139, 92, 246, 0.5);">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-value">Local</p>
+            <p class="stat-label">Data Storage</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.1)); border-color: rgba(6, 182, 212, 0.5);">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-value">None</p>
+            <p class="stat-label">Third-Party Sharing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Tab Navigation -->
+    <div class="tabs-nav">
+      <button
+        class="tab-button"
+        [class.active]="isActive('overview')"
+        (click)="switchTab('overview')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <span>Overview</span>
+      </button>
+
+      <button
+        class="tab-button"
+        [class.active]="isActive('collection')"
+        (click)="switchTab('collection')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        <span>Data Collection</span>
+      </button>
+
+      <button
+        class="tab-button"
+        [class.active]="isActive('usage')"
+        (click)="switchTab('usage')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <span>Usage</span>
+      </button>
+
+      <button
+        class="tab-button"
+        [class.active]="isActive('security')"
+        (click)="switchTab('security')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <span>Security</span>
+      </button>
+
+      <button
+        class="tab-button"
+        [class.active]="isActive('rights')"
+        (click)="switchTab('rights')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Your Rights</span>
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content-container">
+
+      <!-- Overview Tab -->
+      @if (isActive('overview')) {
+      <div class="tab-panel fade-in">
+        <div class="overview-hero">
+          <div class="hero-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="privacyData().overview.icon" />
+            </svg>
+          </div>
+          <h2 class="hero-title">{{ privacyData().overview.title }}</h2>
+          <p class="hero-description">{{ privacyData().overview.description }}</p>
+        </div>
+
+        <div class="key-points-grid">
+          @for (point of privacyData().overview.keyPoints; track point.label) {
+          <div class="key-point-card">
+            <div class="point-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="point.icon" />
+              </svg>
+            </div>
+            <div class="point-info">
+              <p class="point-label">{{ point.label }}</p>
+              <p class="point-value">{{ point.value }}</p>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Data Collection Tab -->
+      @if (isActive('collection')) {
+      <div class="tab-panel fade-in">
+        <div class="section-header">
+          <div class="section-icon-large">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="privacyData().collection.icon" />
+            </svg>
+          </div>
+          <h2 class="section-title-lg">{{ privacyData().collection.title }}</h2>
+        </div>
+
+        <div class="collection-grid">
+          @for (section of privacyData().collection.sections; track section.title) {
+          <div class="collection-card">
+            <div class="collection-header">
+              <div class="collection-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="section.icon" />
+                </svg>
+              </div>
+              <h3 class="collection-title">{{ section.title }}</h3>
+            </div>
+            <p class="collection-description">{{ section.description }}</p>
+            <div class="data-types-list">
+              @for (type of section.dataTypes; track type) {
+              <div class="data-type-item">
+                <div class="data-type-dot"></div>
+                <span>{{ type }}</span>
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Usage Tab -->
+      @if (isActive('usage')) {
+      <div class="tab-panel fade-in">
+        <div class="section-header">
+          <div class="section-icon-large">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="privacyData().usage.icon" />
+            </svg>
+          </div>
+          <h2 class="section-title-lg">{{ privacyData().usage.title }}</h2>
+        </div>
+
+        <div class="purposes-grid">
+          @for (purpose of privacyData().usage.purposes; track purpose.title) {
+          <div class="purpose-card" [style.border-color]="purpose.color">
+            <div class="purpose-icon" [style.background]="purpose.color + '20'">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" [style.color]="purpose.color">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="purpose.icon" />
+              </svg>
+            </div>
+            <h3 class="purpose-title">{{ purpose.title }}</h3>
+            <p class="purpose-description">{{ purpose.description }}</p>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Security Tab -->
+      @if (isActive('security')) {
+      <div class="tab-panel fade-in">
+        <div class="section-header">
+          <div class="section-icon-large">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="privacyData().security.icon" />
+            </svg>
+          </div>
+          <h2 class="section-title-lg">{{ privacyData().security.title }}</h2>
+        </div>
+
+        <div class="security-timeline">
+          @for (measure of privacyData().security.measures; track measure.title) {
+          <div class="security-card">
+            <div class="security-level" [class.implemented]="measure.status === 'implemented'">
+              <span class="level-text">{{ measure.level }}</span>
+            </div>
+            <div class="security-content">
+              <div class="security-header-row">
+                <div class="security-icon-small">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="measure.icon" />
+                  </svg>
+                </div>
+                <h3 class="security-title">{{ measure.title }}</h3>
+              </div>
+              <p class="security-description">{{ measure.description }}</p>
+              <div class="security-status">
+                <span class="status-badge" [class.active]="measure.status === 'implemented'">
+                  {{ measure.status === 'implemented' ? '✓ Implemented' : 'Roadmap' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Rights Tab -->
+      @if (isActive('rights')) {
+      <div class="tab-panel fade-in">
+        <div class="section-header">
+          <div class="section-icon-large">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="privacyData().rights.icon" />
+            </svg>
+          </div>
+          <h2 class="section-title-lg">{{ privacyData().rights.title }}</h2>
+        </div>
+
+        <div class="rights-grid">
+          @for (right of privacyData().rights.rights; track right.title) {
+          <div class="right-card">
+            <div class="right-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="right.icon" />
+              </svg>
+            </div>
+            <h3 class="right-title">{{ right.title }}</h3>
+            <p class="right-description">{{ right.description }}</p>
+            <button class="right-action">{{ right.action }}</button>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Smart Seating Engine</h3>
+        <p>Privacy-First Design • Local Storage Only</p>
+      </div>
+      <div class="footer-actions">
+        <button class="footer-link" (click)="navigateToTerms()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>Terms of Service</span>
+        </button>
+        <a href="mailto:privacy@smartseating.engine" class="footer-link">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span>Contact Privacy Team</span>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Smart Seating Allocation Engine. Built with privacy in mind.</p>
+    </div>
+  </footer>
+</div>

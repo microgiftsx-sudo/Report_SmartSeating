@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './terms.component.html',
   styleUrls: ['./terms.component.css']
 })
-export class TermsComponent {
+export class TermsComponent implements OnInit, OnDestroy {
   expandedSection = signal<string | null>(null);
   activeSection = signal<string>('');
 
@@ -153,6 +153,24 @@ We typically respond to all inquiries within 2-3 business days. For urgent matte
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       this.activeSection.set(sectionId);
+    }
+  }
+
+  ngOnInit() {
+    window.addEventListener('scroll', this.updateScrollProgress);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.updateScrollProgress);
+  }
+
+  updateScrollProgress = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
     }
   }
 }
